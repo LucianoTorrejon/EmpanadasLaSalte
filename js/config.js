@@ -7,6 +7,7 @@ window.CONFIG = {
   // Celular de la empanadería en formato internacional, SIN "+", espacios ni guiones.
   // Ej. Argentina, Salta (387) 555-1234  ->  "5493875551234"
   whatsapp: "5493875818272",
+  contacto: "Nancy", // nombre que se muestra junto al número en el pie
 
   // Datos para la transferencia
   alias: "Nancygf.mp",

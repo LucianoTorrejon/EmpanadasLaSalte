@@ -620,7 +620,7 @@
     $("#ft-dir").textContent = C.local.direccion;
     $("#ft-horario").textContent = C.horario || "";
     const wpp = $("#ft-wpp");
-    wpp.textContent = formatPhone(C.whatsapp);
+    wpp.textContent = `${formatPhone(C.whatsapp)}${C.contacto ? ` (${C.contacto})` : ""}`;
     wpp.href = `https://wa.me/${C.whatsapp}`;
     $("#ft-cobertura").textContent = `Envíos hasta ${C.radioKm} km del carro. También podés retirar tu pedido.`;
     $("#ft-maps").href = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`;

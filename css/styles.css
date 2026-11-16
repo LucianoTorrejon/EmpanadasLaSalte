@@ -59,7 +59,7 @@ input, textarea { font: inherit; }
   background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow);
   padding: 14px 10px; text-align: center; display: flex; flex-direction: column; gap: 2px;
 }
-.price-card.featured { outline: 2px solid var(--gold); }
+.price-card { outline: 2px solid var(--gold); }
 .price-label { font-size: .8rem; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; font-weight: 600; }
 .price-value { font-family: "Fraunces", serif; font-size: clamp(1.15rem, 4vw, 1.6rem); font-weight: 800; color: var(--brand); }
 .price-note { max-width: 960px; margin: 10px auto 0; padding: 0 16px; font-size: .85rem; color: var(--muted); text-align: center; }
