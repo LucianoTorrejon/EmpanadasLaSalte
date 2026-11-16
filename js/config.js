@@ -31,17 +31,12 @@ window.CONFIG = {
     unidad: 1500,
   },
 
-  // Fotos: están en la carpeta img/. Para usar fotos propias, reemplazá los archivos
-  // y borrá el campo "credito" (sólo hace falta para fotos de terceros).
+  // Para mostrar una foto en una variedad, agregá foto: "img/archivo.jpg"
   variedades: [
-    { id: "carne",  nombre: "Carne",  desc: "Carne cortada a cuchillo, cebolla, huevo y especias.", emoji: "🥩", foto: "img/carne.jpg",
-      credito: { autor: "Gonzalo Rivero", licencia: "CC BY-SA 4.0", url: "https://commons.wikimedia.org/wiki/File:Empanadas_salte%C3%B1as_1.jpg" } },
-    { id: "pollo",  nombre: "Pollo",  desc: "Pollo desmenuzado con verdeo y morrón.",              emoji: "🍗", foto: "img/pollo.jpg",
-      credito: { autor: "Horacio Cambeiro", licencia: "CC BY-SA 3.0", url: "https://commons.wikimedia.org/wiki/File:Empanadas_argentinas_fritas_de_pollo_(Argentina).jpg" } },
-    { id: "arabe",  nombre: "Árabe",  desc: "Carne, tomate, cebolla y limón, cerrada en triángulo.", emoji: "🔺", foto: "img/arabe.jpg",
-      credito: { autor: "Carlosdisogra", licencia: "CC BY-SA 3.0", url: "https://commons.wikimedia.org/wiki/File:Empanadas_argentinas_llamadas_%C3%A1rabes,_similares_a_las_Sfiha_cerradas.JPG" } },
-    { id: "queso",  nombre: "Queso",  desc: "Muzzarella bien cremosa.",                              emoji: "🧀", foto: "img/queso.jpg",
-      credito: { autor: "E4024", licencia: "CC BY-SA 4.0", url: "https://commons.wikimedia.org/wiki/File:Empanadas_de_queso_(Argentinian_or_Chilean_cuisine).jpg" } },
+    { id: "carne",  nombre: "Carne",  desc: "Carne cortada a cuchillo, cebolla, huevo y especias.", emoji: "🥩" },
+    { id: "pollo",  nombre: "Pollo",  desc: "Pollo desmenuzado con verdeo y morrón.",              emoji: "🍗" },
+    { id: "arabe",  nombre: "Árabe",  desc: "Carne, tomate, cebolla y limón, cerrada en triángulo.", emoji: "🔺" },
+    { id: "queso",  nombre: "Queso",  desc: "Muzzarella bien cremosa.",                              emoji: "🧀" },
   ],
 
   tipos: [
