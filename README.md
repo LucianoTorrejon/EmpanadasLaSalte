@@ -39,3 +39,9 @@ y abrir http://localhost:8080
 ## Publicar
 
 Al ser estático se puede subir gratis a GitHub Pages, Netlify, Vercel o Cloudflare Pages. En GitHub Pages: *Settings → Pages → Deploy from a branch* y elegir la rama.
+
+## Actualizar el sitio publicado
+
+Después de cambiar `css/` o `js/`, subí el número `?v=...` que aparece en `index.html`
+(en los `<link>` y `<script>` del sitio) para que los navegadores descarguen la versión nueva
+en lugar de usar la guardada en caché.
