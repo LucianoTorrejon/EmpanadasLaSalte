@@ -270,7 +270,7 @@
     $("#step-checkout").hidden = step !== "checkout";
     $("#step-done").hidden = step !== "done";
     $("#sheet-back").hidden = step !== "checkout";
-    $("#sheet-title").textContent = { cart: "Tu pedido", checkout: "Datos de entrega", done: "Listo" }[step];
+    $("#sheet-title").textContent = { cart: "Tu pedido", checkout: "Datos de entrega", done: "Último paso" }[step];
     if (step === "checkout" && isEnvio()) ensureMap();
     $("#sheet").querySelector(".sheet-body:not([hidden])").scrollTop = 0;
   }
