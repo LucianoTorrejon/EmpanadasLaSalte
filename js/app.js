@@ -102,6 +102,7 @@
       .map(
         (v) => `
       <article class="item">
+        ${v.foto ? `<div class="item-photo"><img src="${escapeHtml(v.foto)}" alt="Empanada de ${escapeHtml(v.nombre.toLowerCase())}" loading="lazy" onerror="this.parentNode.remove()" /></div>` : ""}
         <div class="item-head">
           <div class="item-emoji" aria-hidden="true">${v.emoji}</div>
           <div>
@@ -131,6 +132,18 @@
       </article>`
       )
       .join("");
+  }
+
+  function renderCredits() {
+    const cr = C.variedades.filter((v) => v.credito);
+    if (!cr.length) return;
+    $("#credits").innerHTML =
+      "Fotos: " +
+      cr
+        .map((v) => `${escapeHtml(v.nombre)}: <a href="${escapeHtml(v.credito.url)}" target="_blank" rel="noopener">${escapeHtml(v.credito.autor)}</a> (${escapeHtml(v.credito.licencia)})`)
+        .join(" · ") +
+      ", vía Wikimedia Commons.";
+    $("#credits").hidden = false;
   }
 
   function setQty(k, q) {
@@ -592,6 +605,7 @@
     $("#local-dir").textContent = C.local.direccion;
     $("#radio-km").textContent = `${C.radioKm} km`;
     renderMenu();
+    renderCredits();
 
     $("#menu").addEventListener("click", handleQtyClick);
     $("#cart-list").addEventListener("click", handleQtyClick);

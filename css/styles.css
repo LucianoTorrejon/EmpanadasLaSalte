@@ -74,6 +74,9 @@ input, textarea { font: inherit; }
   background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow);
   padding: 18px; display: flex; flex-direction: column; gap: 12px;
 }
+.item { overflow: hidden; }
+.item-photo { margin: -18px -18px 0; aspect-ratio: 16 / 10; background: var(--brand-soft); }
+.item-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .item-head { display: flex; gap: 12px; align-items: center; }
 .item-emoji {
   width: 52px; height: 52px; flex: none; border-radius: 14px;
@@ -257,3 +260,9 @@ input, textarea { font: inherit; }
   .prices { gap: 6px; }
   .price-card { padding: 10px 4px; }
 }
+
+.credits { max-width: 640px; margin: 4px auto 0; padding: 0 16px; font-size: .72rem; }
+.credits a { color: inherit; }
+.item-photo + .item-head .item-emoji { display: none; }
+.sheet { visibility: hidden; transition: transform .28s ease, visibility 0s linear .28s; }
+.sheet.open { visibility: visible; transition: transform .28s ease; }
