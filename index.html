@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>La Salte Empanadas · Menú</title>
+  <meta name="description" content="Pedí tus empanadas de La Salte online: carne, pollo, árabes y queso. Al horno o crudas." />
+  <meta name="theme-color" content="#b5361b" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="logo" aria-hidden="true">🥟</div>
+      <div>
+        <h1>La Salte Empanadas</h1>
+        <p class="tagline">Empanadas caseras · al horno o crudas para tu freezer</p>
+      </div>
+    </div>
+  </header>
+
+  <section class="prices" aria-label="Precios">
+    <div class="price-card"><span class="price-label">Unidad</span><span class="price-value" id="p-unidad"></span></div>
+    <div class="price-card featured"><span class="price-label">Media docena</span><span class="price-value" id="p-media"></span></div>
+    <div class="price-card"><span class="price-label">Docena</span><span class="price-value" id="p-docena"></span></div>
+  </section>
+  <p class="price-note">El precio se calcula sobre el total de empanadas: podés combinar gustos y tipos en la misma docena.</p>
+
+  <main class="menu" id="menu" aria-label="Menú"></main>
+
+  <!-- Barra flotante del carrito -->
+  <button class="cart-bar" id="cart-bar" hidden>
+    <span class="cart-bar-count" id="cart-bar-count">0</span>
+    <span>Ver pedido</span>
+    <strong id="cart-bar-total">$0</strong>
+  </button>
+
+  <!-- Panel lateral / hoja inferior -->
+  <div class="overlay" id="overlay" hidden></div>
+  <aside class="sheet" id="sheet" aria-hidden="true" aria-labelledby="sheet-title" role="dialog">
+    <div class="sheet-head">
+      <button class="icon-btn" id="sheet-back" aria-label="Volver" hidden>←</button>
+      <h2 id="sheet-title">Tu pedido</h2>
+      <button class="icon-btn" id="sheet-close" aria-label="Cerrar">✕</button>
+    </div>
+
+    <!-- Paso 1: carrito -->
+    <div class="sheet-body step" id="step-cart">
+      <ul class="cart-list" id="cart-list"></ul>
+      <div class="summary" id="cart-summary"></div>
+      <div class="sheet-actions">
+        <button class="btn ghost" id="btn-clear">Vaciar</button>
+        <button class="btn primary" id="btn-to-checkout">Continuar</button>
+      </div>
+    </div>
+
+    <!-- Paso 2: datos y entrega -->
+    <form class="sheet-body step" id="step-checkout" hidden novalidate>
+      <label class="field">
+        <span>Tu nombre *</span>
+        <input type="text" id="f-nombre" autocomplete="name" required />
+      </label>
+
+      <fieldset class="field">
+        <legend>¿Cómo lo recibís? *</legend>
+        <div class="segmented">
+          <label><input type="radio" name="entrega" value="retiro" checked /><span>🏪 Retiro en el local</span></label>
+          <label><input type="radio" name="entrega" value="envio" /><span>🛵 Envío a domicilio</span></label>
+        </div>
+      </fieldset>
+
+      <div id="retiro-info" class="info-box">
+        Retirás por: <strong id="local-dir"></strong>
+      </div>
+
+      <div id="envio-box" hidden>
+        <p class="hint">Hacemos envíos dentro de un radio de <strong id="radio-km"></strong> del local. Marcá tu ubicación:</p>
+        <div class="loc-actions">
+          <button type="button" class="btn secondary" id="btn-geo">📍 Usar mi ubicación</button>
+        </div>
+        <div class="search-row">
+          <input type="search" id="f-buscar" placeholder="O buscá tu dirección (calle y número)" />
+          <button type="button" class="btn secondary" id="btn-buscar">Buscar</button>
+        </div>
+        <ul class="search-results" id="search-results" hidden></ul>
+        <div id="map" class="map" aria-label="Mapa para marcar la ubicación de entrega"></div>
+        <p class="hint small">Podés tocar el mapa o arrastrar el pin para ajustar el punto exacto.</p>
+        <div id="dist-status" class="dist-status" hidden></div>
+
+        <label class="field">
+          <span>Dirección de entrega *</span>
+          <input type="text" id="f-direccion" placeholder="Calle, número, barrio" autocomplete="street-address" />
+        </label>
+        <label class="field">
+          <span>Referencias (opcional)</span>
+          <input type="text" id="f-referencia" placeholder="Depto, piso, timbre, color de la casa…" />
+        </label>
+      </div>
+
+      <label class="field">
+        <span>Comentarios (opcional)</span>
+        <textarea id="f-notas" rows="2" placeholder="Ej: sin picante, horario de retiro…"></textarea>
+      </label>
+
+      <div class="summary" id="checkout-summary"></div>
+      <p class="form-error" id="form-error" role="alert" hidden></p>
+      <div class="sheet-actions">
+        <button type="submit" class="btn primary block" id="btn-confirm">Confirmar pedido</button>
+      </div>
+    </form>
+
+    <!-- Paso 3: confirmación -->
+    <div class="sheet-body step" id="step-done" hidden>
+      <div class="done-icon">✅</div>
+      <h3 class="done-title">¡Pedido confirmado!</h3>
+      <p class="done-text">Para finalizar, envianos el pedido por WhatsApp y realizá la transferencia.</p>
+
+      <div class="pay-box">
+        <span class="pay-label">Alias para transferir</span>
+        <div class="alias-row">
+          <code id="done-alias"></code>
+          <button type="button" class="btn ghost small" id="btn-copy">Copiar</button>
+        </div>
+        <span class="pay-label">Titular: <span id="done-titular"></span></span>
+        <span class="pay-total">Total: <strong id="done-total"></strong></span>
+      </div>
+
+      <a class="btn whatsapp block" id="btn-wpp" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="currentColor" d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.64.07-.3-.15-1.26-.46-2.39-1.47-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.61-.92-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48 0 1.46 1.07 2.88 1.21 3.07.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.63.71.22 1.36.19 1.87.12.57-.09 1.76-.72 2.01-1.41.25-.7.25-1.29.17-1.41-.07-.13-.27-.2-.57-.35M12.05 21.5h-.01a9.4 9.4 0 0 1-4.8-1.31l-.34-.2-3.57.93.95-3.48-.22-.36a9.4 9.4 0 0 1-1.45-5.03c0-5.2 4.24-9.43 9.45-9.43a9.4 9.4 0 0 1 9.43 9.44c0 5.2-4.24 9.44-9.44 9.44m8.03-17.47A11.3 11.3 0 0 0 12.05.7C5.79.7.7 5.79.7 12.04c0 2 .52 3.95 1.52 5.67L.6 23.3l5.73-1.5a11.3 11.3 0 0 0 5.71 1.46h.01c6.25 0 11.34-5.09 11.35-11.34 0-3.03-1.18-5.88-3.32-8.02"/></svg>
+        Enviar pedido por WhatsApp
+      </a>
+      <p class="hint small center">La validación del pago es manual: mandá el comprobante por el mismo chat.</p>
+
+      <details class="msg-preview">
+        <summary>Ver mensaje</summary>
+        <pre id="done-msg"></pre>
+      </details>
+
+      <button type="button" class="btn ghost block" id="btn-new">Hacer otro pedido</button>
+    </div>
+  </aside>
+
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+  <footer class="footer">
+    <p>© <span id="year"></span> La Salte Empanadas</p>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
