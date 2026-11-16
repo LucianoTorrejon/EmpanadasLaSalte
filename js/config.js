@@ -6,18 +6,19 @@ window.CONFIG = {
 
   // Celular de la empanadería en formato internacional, SIN "+", espacios ni guiones.
   // Ej. Argentina, Salta (387) 555-1234  ->  "5493875551234"
-  whatsapp: "5493870000000",
+  whatsapp: "5493874822291",
 
   // Datos para la transferencia
-  alias: "LASALTE.EMPANADAS",
+  alias: "polea.barco.pepe",
   titular: "La Salte Empanadas",
 
   // Ubicación del local (desde donde se mide el radio de envío).
   // Para obtenerla: Google Maps -> clic derecho sobre el local -> copiar coordenadas.
   local: {
-    lat: -24.7883,
-    lng: -65.4106,
-    direccion: "Dirección del local",
+    // Coordenadas aproximadas de Obispo Trejo 380 (confirmar con Google Maps)
+    lat: -31.4216,
+    lng: -64.1884,
+    direccion: "Obispo Trejo 380, Nueva Córdoba",
   },
 
   // Radio máximo de envío en kilómetros (distancia en línea recta)
