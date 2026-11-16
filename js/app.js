@@ -416,26 +416,31 @@
     }
     list.hidden = false;
     list.innerHTML = '<li class="hint" style="padding:8px">Buscando…</li>';
-    // Caja de búsqueda alrededor del local (≈ 3 veces el radio) para priorizar resultados cercanos
-    const dLat = (C.radioKm * 3) / 111;
-    const dLng = dLat / Math.cos((C.local.lat * Math.PI) / 180);
-    const viewbox = [C.local.lng - dLng, C.local.lat + dLat, C.local.lng + dLng, C.local.lat - dLat].join(",");
+    // Sólo se buscan direcciones dentro de Salta Capital (recuadro definido en config.js)
+    const Z = C.zonaBusqueda;
+    const viewbox = [Z.oeste, Z.norte, Z.este, Z.sur].join(",");
+    const query = new RegExp(Z.ciudad, "i").test(q) ? q : `${q}, ${Z.ciudad}, ${Z.provincia}`;
     const url =
-      "https://nominatim.openstreetmap.org/search?format=jsonv2&limit=6&countrycodes=ar&accept-language=es" +
-      `&viewbox=${viewbox}&bounded=0&q=${encodeURIComponent(q)}`;
+      "https://nominatim.openstreetmap.org/search?format=jsonv2&addressdetails=1&limit=10&countrycodes=ar&accept-language=es" +
+      `&viewbox=${viewbox}&bounded=1&q=${encodeURIComponent(query)}`;
     try {
       const res = await fetch(url, { headers: { Accept: "application/json" } });
       if (!res.ok) throw new Error(res.status);
-      const data = await res.json();
+      const data = (await res.json())
+        .filter((r) => {
+          const lat = parseFloat(r.lat), lng = parseFloat(r.lon);
+          return lat <= Z.norte && lat >= Z.sur && lng >= Z.oeste && lng <= Z.este;
+        })
+        .slice(0, 6);
       if (!data.length) {
-        list.innerHTML = '<li class="hint" style="padding:8px">Sin resultados. Probá con otra forma o marcá el punto en el mapa.</li>';
+        list.innerHTML = `<li class="hint" style="padding:8px">No encontramos esa dirección en ${escapeHtml(Z.ciudad)} Capital. Probá con calle y número, o marcá el punto en el mapa.</li>`;
         return;
       }
       list.innerHTML = data
-        .map(
-          (r, i) =>
-            `<li><button type="button" data-i="${i}">${escapeHtml(r.display_name)}</button></li>`
-        )
+        .map((r, i) => {
+          const label = shortAddress(r.address, r.display_name);
+          return `<li><button type="button" data-i="${i}">${escapeHtml(label)}</button></li>`;
+        })
         .join("");
       list.onclick = (e) => {
         const b = e.target.closest("button[data-i]");

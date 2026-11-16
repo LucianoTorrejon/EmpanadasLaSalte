@@ -21,6 +21,17 @@ window.CONFIG = {
     direccion: "Obispo Trejo 380, Nueva Córdoba",
   },
 
+  // Zona donde se buscan las direcciones (sólo se muestran resultados dentro de este recuadro).
+  // Cubre Salta Capital: oeste, norte, este, sur.
+  zonaBusqueda: {
+    ciudad: "Salta",
+    provincia: "Salta",
+    oeste: -65.52,
+    norte: -24.68,
+    este: -65.30,
+    sur: -24.90,
+  },
+
   // Radio máximo de envío en kilómetros (distancia en línea recta)
   radioKm: 4,
 
