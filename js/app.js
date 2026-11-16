@@ -314,7 +314,7 @@
       }).addTo(map);
 
       L.marker([C.local.lat, C.local.lng], {
-        icon: L.divIcon({ className: "", html: '<div style="font-size:26px;line-height:1">🏪</div>', iconSize: [28, 28], iconAnchor: [14, 14] }),
+        icon: L.divIcon({ className: "", html: '<div style="font-size:26px;line-height:1">🚚</div>', iconSize: [28, 28], iconAnchor: [14, 14] }),
         interactive: false,
       }).addTo(map);
 
@@ -544,6 +544,7 @@
     L1.push("");
     L1.push("*Pago por transferencia*");
     L1.push(`Alias: *${C.alias}*`);
+    if (C.cvu) L1.push(`CVU: ${C.cvu}`);
     if (C.titular) L1.push(`Titular: ${C.titular}`);
     L1.push("Te envío el comprobante por acá. ¡Gracias!");
     return L1.join("\n");
@@ -566,6 +567,7 @@
 
     $("#btn-wpp").href = link;
     $("#done-alias").textContent = C.alias;
+    $("#done-cvu").textContent = C.cvu || "—";
     $("#done-titular").textContent = C.titular || "—";
     $("#done-total").textContent = money(calcularPrecio(totalUnidades()).total);
     $("#done-msg").textContent = msg;
@@ -587,18 +589,57 @@
     refresh();
   }
 
-  async function copyAlias() {
+  async function copyValue(e) {
+    const btn = e.target.closest("button[data-copy]");
+    if (!btn) return;
+    const campo = btn.dataset.copy; // "alias" o "cvu"
     try {
-      await navigator.clipboard.writeText(C.alias);
-      toast("Alias copiado ✔");
+      await navigator.clipboard.writeText(C[campo]);
+      toast(`${campo === "cvu" ? "CVU" : "Alias"} copiado ✔`);
     } catch {
       const r = document.createRange();
-      r.selectNodeContents($("#done-alias"));
+      r.selectNodeContents($(`#done-${campo}`));
       const s = getSelection();
       s.removeAllRanges();
       s.addRange(r);
       toast("Seleccionado: copialo manualmente");
     }
+  }
+
+  // ---------------------------------------------------------------
+  //  Pie: datos del local y mapa con la ubicación del carro
+  // ---------------------------------------------------------------
+  function formatPhone(n) {
+    // 5493875818272 -> 387 581-8272
+    const local = String(n).replace(/^549/, "");
+    return local.length === 10 ? `${local.slice(0, 3)} ${local.slice(3, 6)}-${local.slice(6)}` : local;
+  }
+
+  function renderFooter() {
+    const { lat, lng } = C.local;
+    $("#ft-dir").textContent = C.local.direccion;
+    $("#ft-horario").textContent = C.horario || "";
+    const wpp = $("#ft-wpp");
+    wpp.textContent = formatPhone(C.whatsapp);
+    wpp.href = `https://wa.me/${C.whatsapp}`;
+    $("#ft-cobertura").textContent = `Envíos hasta ${C.radioKm} km del carro. También podés retirar tu pedido.`;
+    $("#ft-maps").href = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`;
+
+    if (typeof L === "undefined") {
+      $("#map-local").hidden = true;
+      return;
+    }
+    const m = L.map("map-local", { scrollWheelZoom: false, dragging: !L.Browser.mobile, tap: false }).setView([lat, lng], 16);
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      maxZoom: 19,
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+    }).addTo(m);
+    L.marker([lat, lng], {
+      icon: L.divIcon({ className: "", html: '<div style="font-size:34px;line-height:1">🚚</div>', iconSize: [36, 36], iconAnchor: [18, 30] }),
+      title: "La Salte Empanadas",
+    })
+      .addTo(m)
+      .bindPopup(`<strong>La Salte Empanadas</strong><br>${escapeHtml(C.local.direccion)}`);
   }
 
   // ---------------------------------------------------------------
@@ -608,6 +649,7 @@
     document.title = `${C.nombre} · Menú`;
     $("#year").textContent = new Date().getFullYear();
     $("#local-dir").textContent = C.local.direccion;
+    renderFooter();
     $("#radio-km").textContent = `${C.radioKm} km`;
     renderMenu();
     renderCredits();
@@ -634,7 +676,7 @@
     });
     $("#f-direccion").addEventListener("input", (e) => (e.target.dataset.auto = ""));
     $("#step-checkout").addEventListener("submit", onConfirm);
-    $("#btn-copy").addEventListener("click", copyAlias);
+    $("#step-done").addEventListener("click", copyValue);
     $("#btn-new").addEventListener("click", () => {
       resetAll();
       closeSheet();

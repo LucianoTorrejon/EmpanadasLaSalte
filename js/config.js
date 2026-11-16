@@ -6,20 +6,24 @@ window.CONFIG = {
 
   // Celular de la empanadería en formato internacional, SIN "+", espacios ni guiones.
   // Ej. Argentina, Salta (387) 555-1234  ->  "5493875551234"
-  whatsapp: "5493874822291",
+  whatsapp: "5493875818272",
 
   // Datos para la transferencia
-  alias: "polea.barco.pepe",
-  titular: "La Salte Empanadas",
+  alias: "Nancygf.mp",
+  cvu: "0000003100011152445441",
+  titular: "Nancy Gisela Frías",
 
-  // Ubicación del local (desde donde se mide el radio de envío).
-  // Para obtenerla: Google Maps -> clic derecho sobre el local -> copiar coordenadas.
+  // Ubicación del carro (desde donde se mide el radio de envío y se muestra el mapa del pie).
+  // Para obtenerla: Google Maps -> clic derecho sobre el lugar -> copiar coordenadas.
   local: {
-    // Tomadas de https://maps.app.goo.gl/E2skAaCMjAkmTPub9
-    lat: -24.797555,
-    lng: -65.374583,
-    direccion: "Obispo Trejo 380, Nueva Córdoba",
+    // Esquina Antonio Alice y Av. Ciudad de Asunción (OpenStreetMap)
+    lat: -24.797662,
+    lng: -65.374612,
+    direccion: "Antonio Alice N° 12, esquina Av. Asunción (B° Autódromo)",
   },
+
+  // Horario de atención (se muestra en el pie de la página)
+  horario: "Lunes a sábados de 10:30 a 14:30",
 
   // Zona donde se buscan las direcciones (sólo se muestran resultados dentro de este recuadro).
   // Cubre Salta Capital: oeste, norte, este, sur.
@@ -38,16 +42,16 @@ window.CONFIG = {
   // Precios (en pesos)
   precios: {
     docena: 14000,
-    media: 8000,
-    unidad: 1500,
+    media: 7000,
+    unidad: 1300,
   },
 
   // Para mostrar una foto en una variedad, agregá foto: "img/archivo.jpg"
   variedades: [
-    { id: "carne",  nombre: "Carne",  desc: "Carne cortada a cuchillo, cebolla, huevo y especias.", emoji: "🥩" },
-    { id: "pollo",  nombre: "Pollo",  desc: "Pollo desmenuzado con verdeo y morrón.",              emoji: "🍗" },
-    { id: "arabe",  nombre: "Árabe",  desc: "Carne, tomate, cebolla y limón, cerrada en triángulo.", emoji: "🔺" },
-    { id: "queso",  nombre: "Queso",  desc: "Muzzarella bien cremosa.",                              emoji: "🧀" },
+    { id: "carne",  nombre: "Carne",  desc: "Carne, cebolla y morrón.", emoji: "🥩" },
+    { id: "pollo",  nombre: "Pollo",  desc: "Pollo, cebolla y morrón.",              emoji: "🍗" },
+    { id: "arabe",  nombre: "Árabe",  desc: "Carne, cebolla, tomate y limón.", emoji: "🔺" },
+    { id: "queso",  nombre: "Queso",  desc: "Queso, cebolla y morrón.",                              emoji: "🧀" },
   ],
 
   tipos: [

@@ -6,16 +6,18 @@
   <title>La Salte Empanadas · Menú</title>
   <meta name="description" content="Pedí tus empanadas de La Salte online: carne, pollo, árabes y queso. Al horno o crudas." />
   <meta name="theme-color" content="#b5361b" />
+  <link rel="icon" type="image/png" href="img/favicon.png" />
+  <link rel="apple-touch-icon" href="img/apple-touch-icon.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
-  <link rel="stylesheet" href="css/styles.css?v=202611161635" />
+  <link rel="stylesheet" href="css/styles.css?v=202611161827" />
 </head>
 <body>
   <header class="hero">
     <div class="hero-inner">
-      <div class="logo" aria-hidden="true">🥟</div>
+      <img class="logo" src="img/logo.webp" width="320" height="282" alt="Logo de La Salte" />
       <div>
         <h1>La Salte Empanadas</h1>
         <p class="tagline">Empanadas caseras · al horno o crudas para tu freezer</p>
@@ -121,12 +123,18 @@
       <p class="done-text">Para finalizar, envianos el pedido por WhatsApp y realizá la transferencia.</p>
 
       <div class="pay-box">
-        <span class="pay-label">Alias para transferir</span>
+        <span class="pay-label">Alias</span>
         <div class="alias-row">
           <code id="done-alias"></code>
-          <button type="button" class="btn ghost small" id="btn-copy">Copiar</button>
+          <button type="button" class="btn ghost small" data-copy="alias">Copiar</button>
         </div>
-        <span class="pay-label">Titular: <span id="done-titular"></span></span>
+        <span class="pay-label">CVU</span>
+        <div class="alias-row">
+          <code id="done-cvu"></code>
+          <button type="button" class="btn ghost small" data-copy="cvu">Copiar</button>
+        </div>
+        <span class="pay-label">Titular: <strong id="done-titular"></strong></span>
+        <div class="verify-box" role="note">⚠️ Verificá el titular antes de realizar la transferencia.</div>
         <span class="pay-total">Total: <strong id="done-total"></strong></span>
       </div>
 
@@ -148,12 +156,27 @@
   <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
 
   <footer class="footer">
-    <p>© <span id="year"></span> La Salte Empanadas</p>
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <img class="footer-logo" src="img/logo.webp" width="320" height="282" alt="Logo de La Salte" loading="lazy" />
+      </div>
+      <dl class="footer-info">
+        <div><dt>Dónde estamos</dt><dd id="ft-dir"></dd></div>
+        <div><dt>Horario de atención</dt><dd id="ft-horario"></dd></div>
+        <div><dt>WhatsApp</dt><dd><a id="ft-wpp" target="_blank" rel="noopener"></a></dd></div>
+        <div><dt>Cobertura de envío</dt><dd id="ft-cobertura"></dd></div>
+      </dl>
+      <div class="footer-map">
+        <div id="map-local" class="map" aria-label="Mapa con la ubicación del carro"></div>
+        <a class="btn secondary small" id="ft-maps" target="_blank" rel="noopener">📍 Cómo llegar</a>
+      </div>
+    </div>
+    <p class="footer-copy">© <span id="year"></span> La Salte Empanadas</p>
     <p class="credits" id="credits" hidden></p>
   </footer>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
-  <script src="js/config.js?v=202611161635"></script>
-  <script src="js/app.js?v=202611161635"></script>
+  <script src="js/config.js?v=202611161827"></script>
+  <script src="js/app.js?v=202611161827"></script>
 </body>
 </html>
