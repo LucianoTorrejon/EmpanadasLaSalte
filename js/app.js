@@ -318,7 +318,10 @@
 
     if (map) {
       if (!marker) {
-        marker = L.marker([lat, lng], { draggable: true }).addTo(map);
+        marker = L.marker([lat, lng], {
+          draggable: true,
+          icon: L.divIcon({ className: "", html: '<div style="font-size:32px;line-height:1">📍</div>', iconSize: [32, 32], iconAnchor: [16, 30] }),
+        }).addTo(map);
         marker.on("dragend", () => {
           const p = marker.getLatLng();
           setDeliveryPoint(p.lat, p.lng, { reverse: true });
@@ -367,9 +370,33 @@
   }
 
   // Geocodificación con OpenStreetMap Nominatim (gratuito, sin API key)
+  /** Acepta "lat, lng" o links de Google Maps que incluyan coordenadas. */
+  function parseCoords(q) {
+    const pats = [
+      /@(-?\d+\.\d+),\s*(-?\d+\.\d+)/,
+      /!3d(-?\d+\.\d+)!4d(-?\d+\.\d+)/,
+      /[?&](?:q|query|ll|destination)=(-?\d+\.\d+),\s*(-?\d+\.\d+)/,
+      /^\s*(-?\d{1,2}\.\d+)\s*,\s*(-?\d{1,3}\.\d+)\s*$/,
+    ];
+    for (const re of pats) {
+      const m = q.match(re);
+      if (m) {
+        const lat = parseFloat(m[1]), lng = parseFloat(m[2]);
+        if (Math.abs(lat) <= 90 && Math.abs(lng) <= 180) return { lat, lng };
+      }
+    }
+    return null;
+  }
+
   async function searchAddress() {
     const q = $("#f-buscar").value.trim();
     const list = $("#search-results");
+    const coords = parseCoords(q);
+    if (coords) {
+      list.hidden = true;
+      setDeliveryPoint(coords.lat, coords.lng, { pan: true, reverse: true });
+      return;
+    }
     if (q.length < 3) {
       toast("Escribí calle y número para buscar.");
       return;
